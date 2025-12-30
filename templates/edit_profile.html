@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm rounded-3">
+                <div class="card-header bg-light text-center">
+                    <h4 class="fw-bold">Edit Profile</h4>
+                </div>
+
+                <div class="card-body px-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Current Profile Image -->
+                        <div class="text-center mb-4">
+                            {% if profile.picture.url %}
+                                <img src="{{ profile.picture.url }}"
+                                     class="rounded-circle border"
+                                     width="120" height="120"
+                                     style="object-fit: cover;">
+                            {% else %}
+                                <img src="https://via.placeholder.com/120"
+                                     class="rounded-circle border">
+                            {% endif %}
+                        </div>
+
+                        <!-- Profile Photo -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Profile Photo</label>
+                            <input type="file"
+                                   name="picture"
+                                   class="form-control"
+                                   id="id_picture">
+                        </div>
+
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Name</label>
+                            <input type="text"
+                                   name="name"
+                                   value="{{ profile.name }}"
+                                   class="form-control"
+                                   placeholder="Enter your name"
+                                   id="id_name">
+                        </div>
+
+                        <!-- Email (Readonly) -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email"
+                                   value="{{ profile.user.email }}"
+                                   class="form-control"
+                                   id="id_email"
+                                   name="email"
+                                   readonly>
+                        </div>
+
+                        <!-- Bio -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Bio</label>
+                            <textarea name="bio"
+                                      rows="3"
+                                      class="form-control"
+                                      id="id_bio"
+                                      placeholder="Tell something about yourself">{{ profile.bio }}</textarea>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'profile' %}"
+                               class="btn btn-outline-secondary">
+                                Back
+                            </a>
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                Update Profile
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
