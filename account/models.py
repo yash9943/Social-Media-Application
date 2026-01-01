@@ -21,7 +21,6 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, password)
         user.is_staff = True
         user.is_superuser = True
-        # user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -50,7 +49,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     bio = models.TextField()
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='Profile Photo/')
     
     def __str__(self):
         return self.name

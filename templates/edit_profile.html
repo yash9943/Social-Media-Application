@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <div class="card shadow-sm rounded-3">
+            <div class="card shadow-sm rounded-2">
                 <div class="card-header bg-light text-center">
                     <h4 class="fw-bold">Edit Profile</h4>
                 </div>
@@ -14,10 +14,8 @@
                 <div class="card-body px-4">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-
-                        <!-- Current Profile Image -->
                         <div class="text-center mb-4">
-                            {% if profile.picture.url %}
+                            {% if profile.picture %}
                                 <img src="{{ profile.picture.url }}"
                                      class="rounded-circle border"
                                      width="120" height="120"
@@ -27,8 +25,6 @@
                                      class="rounded-circle border">
                             {% endif %}
                         </div>
-
-                        <!-- Profile Photo -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Profile Photo</label>
                             <input type="file"
@@ -36,8 +32,6 @@
                                    class="form-control"
                                    id="id_picture">
                         </div>
-
-                        <!-- Name -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Name</label>
                             <input type="text"
@@ -47,8 +41,6 @@
                                    placeholder="Enter your name"
                                    id="id_name">
                         </div>
-
-                        <!-- Email (Readonly) -->
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Email</label>
                             <input type="email"

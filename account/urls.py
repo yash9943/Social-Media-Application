@@ -1,7 +1,8 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from account.views import UserLogin, HomePage, UserRegister, UserProfile, FeedView, UserLogout, UserEditProfile
+from account.views import UserLogin, HomePage, UserRegister, UserProfile, UserLogout, UserEditProfile
+from posts.views import FeedView
 
 urlpatterns = [
     path('',HomePage.as_view(),name='home_page'),

@@ -1,23 +1,19 @@
 from django.shortcuts import render, redirect
 from account.models import User, Profile
-from django.views.generic import TemplateView, View, CreateView, DetailView, UpdateView
+from django.views.generic import TemplateView, View, CreateView, UpdateView
 from django.urls import reverse_lazy
 from account.forms import RegistrationForm, EditProfileForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-
-from django.conf import settings
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from posts.models import Posts
 
 class HomePage(TemplateView):
-    # sec_key = settings.SECRET_KEY
-    # print(sec_key)
     template_name = 'base.html'
 
 class UserLogin(View):
-    # form_class = LoginForm
     template_name = 'login.html'
     success_url = reverse_lazy('feed')
     
@@ -45,10 +41,7 @@ class UserRegister(CreateView):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        # print(request.POST)
         if form.is_valid():
-            # print("Form is valid.")
-            
             data = User()
             data.email = form.cleaned_data['email']
             data.username = form.cleaned_data['username']
@@ -62,22 +55,24 @@ class UserRegister(CreateView):
         
 
 class UserLogout(View):
-    # success_url = reverse_lazy('login')
-
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('login')
 
-
-class UserProfile(LoginRequiredMixin, TemplateView):
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
+class UserProfile(TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile, created = Profile.objects.get_or_create(user=self.request.user)
+        user_post = Posts.objects.filter(user = self.request.user)
+        profile, created = Profile.objects.get_or_create(user = self.request.user)
         context['profile'] = profile
+        context['user_post'] = user_post
         return context
     
+
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
 class UserEditProfile(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = EditProfileForm
@@ -88,7 +83,3 @@ class UserEditProfile(LoginRequiredMixin, UpdateView):
         profile, created = Profile.objects.get_or_create(user=self.request.user)
         return profile
         
-
-class FeedView(LoginRequiredMixin,TemplateView):
-    template_name = 'feed.html'
-    
