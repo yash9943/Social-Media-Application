@@ -8,11 +8,3 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Posts
         fields = ['picture','caption']
-        
-class EditPostForm(forms.ModelForm):
-    picture = forms.ImageField(widget=forms.FileInput, required=False)
-    caption = forms.CharField(widget=forms.TextInput, required=False)
-    
-    class Meta:
-        model = Posts
-        fields = ['picture','caption']

@@ -10,3 +10,14 @@ class Posts(models.Model):
     
     def __str__(self):
         return f"{self.user} - {self.caption}"
+    
+class Likes(models.Model):
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.CharField
+    created_at = models.DateTimeField(auto_now_add=True)

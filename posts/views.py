@@ -3,14 +3,13 @@ from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from . models import Posts
 from django.urls import reverse_lazy
 from django.contrib import messages
-from . forms import PostForm, EditPostForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from . forms import PostForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 # Create your views here.
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
-class AddPost(LoginRequiredMixin, CreateView):
+class AddPost(CreateView):
     model = Posts
     form_class = PostForm
     template_name = 'add_post.html'
@@ -21,7 +20,7 @@ class AddPost(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
-class FeedView(LoginRequiredMixin,ListView):
+class FeedView(ListView):
     model = Posts
     queryset = Posts.objects.order_by('-created_at')
     template_name = 'feed.html'
@@ -29,9 +28,9 @@ class FeedView(LoginRequiredMixin,ListView):
 #     print(queryset)
 
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
-class EditPost(LoginRequiredMixin, UpdateView):
+class EditPost(UpdateView):
     model = Posts
-    form_class = EditPostForm
+    form_class = PostForm
     template_name = 'edit_post.html'
     success_url = reverse_lazy("feed")
 
@@ -40,7 +39,7 @@ class EditPost(LoginRequiredMixin, UpdateView):
         return post
 
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
-class DeletePost(LoginRequiredMixin, DeleteView):
+class DeletePost(DeleteView):
     model = Posts
     template_name = 'delete_post.html'
     success_url = reverse_lazy("feed")
