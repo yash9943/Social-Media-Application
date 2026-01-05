@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Edit Comment</h5>
+        </div>
+
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label">Comment</label>
+              {{ form.content }}
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'feed' %}" class="btn btn-outline-secondary">
+                Cancel
+              </a>
+
+              <button type="submit" class="btn btn-primary">
+                Update Comment
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
