@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from posts.models import Posts
+from posts.models import Posts, Likes
 
 class HomePage(TemplateView):
     template_name = 'base.html'
@@ -66,9 +66,12 @@ class UserProfile(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_post = Posts.objects.filter(user = self.request.user)
+        user_liked_post = Likes.objects.filter(user = self.request.user)
+        
         profile, created = Profile.objects.get_or_create(user = self.request.user)
         context['profile'] = profile
         context['user_post'] = user_post
+        context['user_liked_post'] = user_liked_post
         return context
     
 

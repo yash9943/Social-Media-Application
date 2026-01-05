@@ -12,12 +12,12 @@ class Posts(models.Model):
         return f"{self.user} - {self.caption}"
     
 class Likes(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     created_at = models.DateTimeField(auto_now_add=True)
     
 class Comment(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name="comments")
+    content = models.CharField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
